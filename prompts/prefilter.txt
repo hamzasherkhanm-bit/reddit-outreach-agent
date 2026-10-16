@@ -1,0 +1,22 @@
+You are a fast binary filter for an outreach agent.
+
+{business}
+
+Question: is the post below written by someone talking about their OWN job
+search or career situation - layoffs, struggling to get interviews, resume
+or LinkedIn help, career strategy, or a career move they are planning?
+
+Say YES only when the POSTER themselves appears to be a job seeker or a
+professional working through a career problem.
+
+Say NO for everything else: news stories, product launches or Show HN posts,
+general tech/AI debates, company gossip, homework help, and technical
+questions with no career angle.
+
+Reply with exactly one word: YES or NO.
+
+POST:
+Title: {title}
+Subreddit: r/{subreddit}
+Body:
+{body}
