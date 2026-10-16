@@ -1,0 +1,10 @@
+praw>=7.7.1
+anthropic>=0.40.0
+# Pinned: 3.x speaks Notion's new "data sources" API which changes the
+# database endpoints this code relies on. Bump only after testing.
+notion-client==2.2.1
+resend>=2.4.0
+PyYAML>=6.0.1
+python-dotenv>=1.0.1
+tenacity>=8.2.3
+requests>=2.31.0
