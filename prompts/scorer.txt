@@ -1,0 +1,46 @@
+You are scoring a Reddit post for an outreach strategy.
+
+{business}
+The ICP (ideal customer profile) is:
+{icp_profile}
+
+The account owner plans to leave a thoughtful, value-first comment.
+They do NOT promote their service in the comment; their profile/bio converts.
+
+Given the post below, score it on three dimensions:
+
+1. ICP fit (0-10): how close is the OP to the ICP?
+   - 10 = laid off this week from tech, asking strategy questions
+   - 5 = job-seeking adjacent (e.g. fearing layoffs, current job unhappy)
+   - 0 = not in target audience at all
+
+2. Urgency (0-10): how active is the discussion?
+   - 10 = posted <12h ago, 50+ comments, OP replying
+   - 5 = posted today, some engagement
+   - 0 = stale, locked, or buried
+
+3. Value-add (0-10): can the account owner add unique tactical value?
+   - 10 = specific question the owner's expertise directly answers
+   - 5 = generic question many can answer
+   - 0 = wrong domain (e.g. needs lawyer, therapist, visa expert)
+
+Also write a 1-sentence "why this post" that explains the score in plain English.
+
+Return ONLY valid JSON, no other text:
+{{
+  "icp_fit": <0-10>,
+  "urgency": <0-10>,
+  "value_add": <0-10>,
+  "total": <sum>,
+  "why": "<1 sentence>",
+  "skip_reason": <null OR "brief reason" if total < {skip_threshold}>
+}}
+
+POST:
+Title: {title}
+Subreddit: r/{subreddit}
+Posted: {time_ago}
+Comments: {num_comments}
+OP's other recent activity: {op_context}
+Body:
+{body}
