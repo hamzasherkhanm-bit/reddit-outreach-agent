@@ -1,0 +1,70 @@
+# Reddit outreach agent - main configuration.
+# This file and the two prompt templates in prompts/ hold every tunable
+# setting, so behaviour can be adjusted without touching the code.
+
+sources:
+  reddit:
+    enabled: true
+    # One line per community. Add/remove freely - no code changes needed.
+    subreddits:
+      - cscareerquestions
+      - ExperiencedDevs
+      - layoffs
+      - recruitinghell
+      - EngineeringResumes
+      - resumes
+      - csMajors
+      - ITCareerQuestions
+      - datascience
+      - leetcode
+    max_posts_per_subreddit: 50   # rate-limit safety cap
+    min_comments: 5               # posts with fewer comments are skipped
+    max_age_hours: 24             # only posts from the last N hours
+
+  hackernews:
+    enabled: true
+    # "Ask HN" posts are always scanned; these keywords also search all stories.
+    # Multi-word keywords are matched as exact phrases (no fuzzy matching).
+    keywords:
+      - laid off
+      - layoff
+      - job search
+      - job hunt
+      - not getting interviews
+      - resume feedback
+      - career change
+      - struggling to find a job
+    max_posts_per_search: 100
+    min_comments: 2               # HN career posts get fewer comments than Reddit
+    max_age_hours: 24
+
+  # Other platforms (Instagram, TikTok, LinkedIn) are intentionally NOT
+  # implemented - none of them offer an API that permits this use, and
+  # scraping violates their Terms of Service. See src/sources/ADDING_A_SOURCE.md.
+
+scoring:
+  # Model used for the cheap binary pre-filter pass
+  prefilter_model: claude-haiku-4-5
+  # Model used for full ICP scoring. A larger model gives better
+  # scores at roughly 3x the cost.
+  scorer_model: claude-haiku-4-5
+  # Posts scoring below this total (icp_fit + urgency + value_add) get a skip_reason
+  skip_threshold: 18
+  # Max posts sent to the full scorer per run - cost guardrail
+  max_scored_per_run: 120
+
+output:
+  notion_top_n: 15      # ranked posts written to the Notion DB
+  notion_min_total: 10  # posts scoring below this never reach the board (keeps it clean)
+  email_top_n: 5        # posts included in the morning email
+  email_subject_prefix: "Daily outreach queue"
+
+# Business context injected into both prompts. Edit here, not in code.
+icp:
+  business: "A career coaching service that helps job seekers and mid-career professionals land their next role faster through positioning, resume, and interview strategy."
+  profile: |
+    - Job seekers and mid-career professionals (roughly 3-15 years of experience)
+    - Actively looking for opportunities OR applying but struggling to get interviews/callbacks
+    - Recently laid off, stuck in a search, or planning a career move
+    - Asking about their OWN situation: strategy, positioning, resume, LinkedIn, interviews
+    - NOT: news stories, product launches, general tech debates, students with homework
